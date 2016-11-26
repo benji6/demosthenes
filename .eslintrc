@@ -1,0 +1,6 @@
+{
+  "extends": "benji6",
+  "rules": {
+    "no-console": 0
+  }
+}
