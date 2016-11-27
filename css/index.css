@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+.instructions {
+  animation: fade-out 2s;
+  animation-fill-mode: forwards;
+  background-color: #000;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 0.5rem;
+  position: fixed;
+  right: 1rem;
+  text-transform: uppercase;
+  top: 1rem;
+}
+
+@keyframes fade-out {
+  0% { opacity: 0 }
+  25% { opacity: 1 }
+  75% { opacity: 1 }
+  100% { opacity: 0 }
+}
