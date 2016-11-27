@@ -66,11 +66,10 @@ const runShader = fragShaderIndex => fetch(`shaders/${fragShaderNames[fragShader
 })
 
 window.onhashchange = () => {
-  if (!location.hash) location.hash = 1
-  fragShaderIndex = Number(location.hash.slice(1))
+  fragShaderIndex = !location.hash ? 0 : Number(location.hash.slice(1))
   if (!fragShaderNames[fragShaderIndex]) {
-    location.hash = 1
-    fragShaderIndex = 1
+    location.hash = 0
+    fragShaderIndex = 0
   }
 
   runShader(fragShaderIndex)
