@@ -30,7 +30,7 @@ const gl = document.querySelector('canvas').getContext('webgl')
 gl.canvas.width = innerWidth
 gl.canvas.height = innerHeight
 
-const runShader = fragShaderIndex => fetch(`shaders/${fragShaderNames[fragShaderIndex]}.glsl`)
+const runShader = fragShaderIndex => fetch(`glsl/${fragShaderNames[fragShaderIndex]}.glsl`)
   .then(response => response.text())
   .then(fragmentShaderSource => {
     const vertexShader = createShader(gl, gl.VERTEX_SHADER, 'attribute vec4 a_position;void main(){gl_Position=a_position;}')
