@@ -4,31 +4,8 @@ const fragShaderNames = [
   'smoke',
 ]
 
-if (!location.search) location.search = 1
-let fragShaderIndex = Number(location.search.slice(1))
-if (!fragShaderNames[fragShaderIndex]) {
-  location.search = 1
-  fragShaderIndex = 1
-}
-
-document.onkeydown = e => {
-  switch (e.keyCode) {
-    // left
-    case 37:
-    case 65:
-    // down
-    case 40:
-    case 83:
-      return location.search = !fragShaderIndex ? fragShaderNames.length - 1 : fragShaderIndex - 1
-    // right
-    case 39:
-    case 68:
-    // up
-    case 38:
-    case 87:
-      return location.search = fragShaderIndex === fragShaderNames.length - 1 ? 0 : fragShaderIndex + 1
-  }
-}
+let animationFrameId
+let fragShaderIndex
 
 const createShader = (gl, type, source) => {
   const shader = gl.createShader(type)
@@ -53,7 +30,7 @@ const gl = document.querySelector('canvas').getContext('webgl')
 gl.canvas.width = innerWidth
 gl.canvas.height = innerHeight
 
-fetch(`shaders/${fragShaderNames[fragShaderIndex]}.glsl`)
+const runShader = fragShaderIndex => fetch(`shaders/${fragShaderNames[fragShaderIndex]}.glsl`)
   .then(response => response.text())
   .then(fragmentShaderSource => {
     const vertexShader = createShader(gl, gl.VERTEX_SHADER, 'attribute vec4 a_position;void main(){gl_Position=a_position;}')
@@ -78,12 +55,46 @@ fetch(`shaders/${fragShaderNames[fragShaderIndex]}.glsl`)
     const uResolutionLocation = gl.getUniformLocation(program, 'u_resolution')
     const uTimeLocation = gl.getUniformLocation(program, 'u_time')
 
+    cancelAnimationFrame(animationFrameId)
+
     ;(function render () {
-      requestAnimationFrame(render)
+      animationFrameId = requestAnimationFrame(render)
       gl.uniform1f(uTimeLocation, performance.now() / 1000)
       gl.uniform2fv(uResolutionLocation, [gl.canvas.width, gl.canvas.height])
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2)
     }())
 })
+
+window.onhashchange = () => {
+  if (!location.hash) location.hash = 1
+  fragShaderIndex = Number(location.hash.slice(1))
+  if (!fragShaderNames[fragShaderIndex]) {
+    location.hash = 1
+    fragShaderIndex = 1
+  }
+
+  runShader(fragShaderIndex)
+}
+
+window.onhashchange()
+
+document.onkeydown = e => {
+  switch (e.keyCode) {
+    // left
+    case 37:
+    case 65:
+    // down
+    case 40:
+    case 83:
+      return location.hash = !fragShaderIndex ? fragShaderNames.length - 1 : fragShaderIndex - 1
+    // right
+    case 39:
+    case 68:
+    // up
+    case 38:
+    case 87:
+      return location.hash = fragShaderIndex === fragShaderNames.length - 1 ? 0 : fragShaderIndex + 1
+  }
+}
 
 onresize = () => gl.viewport(0, 0, gl.canvas.width = innerWidth, gl.canvas.height = innerHeight)

@@ -1,27 +1,41 @@
 body {
+  font-family: sans-serif;
   margin: 0;
   overflow: hidden;
-  font-family: sans-serif;
 }
 
 .instructions {
-  animation: fade-out 2s;
+  animation: instructions-animation 7.5s;
   animation-fill-mode: forwards;
   background-color: #000;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   color: #fff;
-  font-size: 0.75rem;
+  cursor: default;
   font-weight: 900;
-  padding: 0.5rem;
+  left: 1rem;
+  margin: 0 auto;
+  padding: 1rem;
   position: fixed;
-  right: 1rem;
   text-transform: uppercase;
   top: 1rem;
+  user-select: none;
 }
 
-@keyframes fade-out {
-  0% { opacity: 0 }
-  25% { opacity: 1 }
-  75% { opacity: 1 }
-  100% { opacity: 0 }
+@keyframes instructions-animation {
+  0% {
+    opacity: 0;
+    transform: translateX(-110%);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  15% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
