@@ -19,6 +19,7 @@
   "homepage": "https://github.com/benji6/demosthenes#readme",
   "devDependencies": {
     "eslint": "^3.11.0",
-    "eslint-config-benji6": "github:benji6/eslint-config-benji6#v0.3.0"
+    "eslint-config-benji6": "github:benji6/eslint-config-benji6#v0.3.0",
+    "live-server": "^1.1.0"
   }
 }
