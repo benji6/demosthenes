@@ -13,12 +13,9 @@ vec2 random2(vec2 st){
 }
 
 vec3 hsb2rgb( in vec3 c ){
-    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),
-                             6.0)-3.0)-1.0,
-                     0.0,
-                     1.0 );
-    rgb = rgb*rgb*(3.0-2.0*rgb);
-    return c.z * mix( vec3(1.0), rgb, c.y);
+  vec3 rgb = clamp(abs(mod(c.x * 6. + vec3(0., 4., 2.), 6.) - 3.) - 1., 0., 1.);
+  rgb = rgb * rgb * (3. - 2. * rgb);
+  return c.z * mix(vec3(1.), rgb, c.y);
 }
 
 // Value Noise by Inigo Quilez - iq/2013
