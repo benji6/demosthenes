@@ -2,6 +2,7 @@ const fragShaderNames = [
   'mandelbrot',
   'noise',
   'smoke',
+  'voronoi',
 ]
 
 let animationFrameId
