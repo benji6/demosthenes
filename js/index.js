@@ -78,6 +78,39 @@ window.onhashchange = () => {
 
 window.onhashchange()
 
+const navigateLeft = () => location.hash = !fragShaderIndex ? fragShaderNames.length - 1 : fragShaderIndex - 1
+const navigateRight = () => location.hash = fragShaderIndex === fragShaderNames.length - 1 ? 0 : fragShaderIndex + 1
+
+let xDown = null
+let yDown = null
+
+const handleTouchStart = e => {
+  xDown = e.touches[0].clientX
+  yDown = e.touches[0].clientY
+}
+
+const handleTouchMove = e => {
+    if (!xDown || !yDown) return
+
+    const xUp = e.touches[0].clientX
+    const yUp = e.touches[0].clientY
+
+    const xDiff = xDown - xUp
+    const yDiff = yDown - yUp
+
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff > 0) navigateLeft()
+        else navigateRight()
+    } else if (yDiff > 0) navigateRight()
+    else navigateLeft()
+
+    xDown = null
+    yDown = null
+}
+
+document.addEventListener('touchstart', handleTouchStart)
+document.addEventListener('touchmove', handleTouchMove)
+
 document.onkeydown = e => {
   switch (e.keyCode) {
     // left
@@ -86,14 +119,14 @@ document.onkeydown = e => {
     // down
     case 40:
     case 83:
-      return location.hash = !fragShaderIndex ? fragShaderNames.length - 1 : fragShaderIndex - 1
+      return navigateLeft()
     // right
     case 39:
     case 68:
     // up
     case 38:
     case 87:
-      return location.hash = fragShaderIndex === fragShaderNames.length - 1 ? 0 : fragShaderIndex + 1
+      return navigateRight()
   }
 }
 
