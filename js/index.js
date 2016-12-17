@@ -1,5 +1,6 @@
 const fragShaderNames = [
   'mandelbrot',
+  'marble-flow',
   'noise',
   'smoke',
   'voronoi',
