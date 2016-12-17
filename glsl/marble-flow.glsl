@@ -8,7 +8,7 @@ uniform vec2 u_resolution;
 uniform float u_time;
 
 float random (in vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.3456, 78.910))) * 12345.6789);
+  return fract(sin(dot(st.xy, vec2(12.3456, 78.910))) * 12345.6789);
 }
 
 vec3 hsb2rgb (in vec3 c) {
@@ -64,8 +64,6 @@ void main() {
     color = mix(color,
                 vec3(0, 0, 0.164706),
                 clamp(length(q), 0., 1.));
-
-
 
     color = mix(color,
                 hsb2rgb(vec3(u_time * .025 + length(toCenter) * .2 * st.x * .25 * st.y * .1, .5, .67)),

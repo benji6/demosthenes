@@ -5,8 +5,8 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-vec2 random2( vec2 p ) {
-    return fract(sin(vec2(dot(p,vec2(123.4, 567.8)),dot(p,vec2(269.5,183.3))))*123456.789);
+vec2 random2 (vec2 st) {
+  return fract(sin(vec2(dot(st, vec2(123.4, 567.8)), dot(st, vec2(876.5, 432.1)))) * 123456.789);
 }
 
 void main() {
@@ -26,7 +26,8 @@ void main() {
             vec2 point = random2(i_st + neighbor);
             point = 0.5 + 0.5 * sin(u_time * .33 + 5.4321 * point);
             vec2 diff = neighbor + point - f_st;
-            float dist = pow(length(diff), 2.);
+            float diffLength = length(diff);
+            float dist = diffLength * diffLength;
             m_dist = min(m_dist, dist);
         }
     }
