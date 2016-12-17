@@ -4,6 +4,7 @@ const fragShaderNames = [
   'noise',
   'smoke',
   'voronoi',
+  'water',
 ]
 
 let animationFrameId
