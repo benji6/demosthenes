@@ -1,10 +1,10 @@
 const fragShaderNames = [
-  'mandelbrot',
-  'marble-flow',
-  'noise',
-  'smoke',
-  'voronoi',
-  'water',
+  {name: 'mandelbrot'},
+  {name: 'marble-flow'},
+  {name: 'noise'},
+  {name: 'smoke'},
+  {name: 'voronoi'},
+  {name: 'water'},
 ]
 
 let animationFrameId
@@ -33,40 +33,48 @@ const gl = document.querySelector('canvas').getContext('webgl')
 gl.canvas.width = innerWidth
 gl.canvas.height = innerHeight
 
-const runShader = fragShaderIndex => fetch(`glsl/${fragShaderNames[fragShaderIndex]}.glsl`)
-  .then(response => response.text())
-  .then(fragmentShaderSource => {
-    const vertexShader = createShader(gl, gl.VERTEX_SHADER, 'attribute vec4 a_position;void main(){gl_Position=a_position;}')
-    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)
-    const program = createProgram(gl, vertexShader, fragmentShader)
-    const positionAttributeLocation = gl.getAttribLocation(program, 'a_position')
-    const positionBuffer = gl.createBuffer()
+const runShader = fragShaderIndex => {
+  const {name} = fragShaderNames[fragShaderIndex]
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+  const promises = [
+    fetch('glsl/vert.glsl').then(response => response.text()),
+    fetch(`glsl/${name}.glsl`).then(response => response.text()),
+  ]
 
-    const vertices = new Float32Array([
-      -1, -1, -1, 1, 1, 1,
-      -1, -1, 1, 1, 1, -1,
-    ])
+  Promise.all(promises)
+    .then(([vertexShaderSrc, fragmentShaderSrc]) => {
+      const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSrc)
+      const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSrc)
+      const program = createProgram(gl, vertexShader, fragmentShader)
+      const positionAttributeLocation = gl.getAttribLocation(program, 'a_position')
+      const positionBuffer = gl.createBuffer()
 
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)
-    gl.enableVertexAttribArray(positionAttributeLocation)
-    gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0)
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-    gl.useProgram(program)
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
 
-    const uResolutionLocation = gl.getUniformLocation(program, 'u_resolution')
-    const uTimeLocation = gl.getUniformLocation(program, 'u_time')
+      const vertices = new Float32Array([
+        -1, -1, -1, 1, 1, 1,
+        -1, -1, 1, 1, 1, -1,
+      ])
 
-    cancelAnimationFrame(animationFrameId)
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)
+      gl.enableVertexAttribArray(positionAttributeLocation)
+      gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0)
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+      gl.useProgram(program)
 
-    ;(function render () {
-      animationFrameId = requestAnimationFrame(render)
-      gl.uniform1f(uTimeLocation, performance.now() / 1000)
-      gl.uniform2fv(uResolutionLocation, [gl.canvas.width, gl.canvas.height])
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2)
-    }())
-})
+      const uResolutionLocation = gl.getUniformLocation(program, 'u_resolution')
+      const uTimeLocation = gl.getUniformLocation(program, 'u_time')
+
+      cancelAnimationFrame(animationFrameId)
+
+      ;(function render () {
+        animationFrameId = requestAnimationFrame(render)
+        gl.uniform1f(uTimeLocation, performance.now() / 1000)
+        gl.uniform2fv(uResolutionLocation, [gl.canvas.width, gl.canvas.height])
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2)
+      }())
+  })
+}
 
 window.onhashchange = () => {
   fragShaderIndex = !location.hash ? 0 : Number(location.hash.slice(1))
