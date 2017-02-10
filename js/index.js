@@ -70,6 +70,23 @@ const runShader = fragShaderIndex => {
       cancelAnimationFrame(animationFrameId)
 
       if (img) {
+        const computeKernelWeight = kernel => {
+          const weight = kernel.reduce((a, b) => a + b)
+          return weight <= 0 ? 1 : weight
+        }
+
+        const kernelLocation = gl.getUniformLocation(program, 'u_kernel[0]')
+        const kernelWeightLocation = gl.getUniformLocation(program, 'u_kernelWeight')
+
+        const edgeDetectKernel = [
+          -1, -1, -1,
+          -1, 16, -1,
+          -1, -1, -1,
+        ]
+
+        gl.uniform1fv(kernelLocation, edgeDetectKernel)
+        gl.uniform1f(kernelWeightLocation, computeKernelWeight(edgeDetectKernel))
+
         // HACK i don't understand this and it's horrible
         setTimeout(() => {
           const textureSizeLocation = gl.getUniformLocation(program, 'u_textureSize')
