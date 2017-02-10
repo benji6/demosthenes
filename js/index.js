@@ -1,12 +1,4 @@
-const fragShaderNames = [
-  {name: 'mandelbrot'},
-  {name: 'marble-flow'},
-  {name: 'noise'},
-  {name: 'smoke'},
-  {name: 'voronoi'},
-  {name: 'water'},
-  {img: 'lines.jpg', name: 'lines'},
-]
+const {manifests} = window.demosthenes
 
 let animationFrameId
 let fragShaderIndex
@@ -42,11 +34,11 @@ const loadImage = src => new Promise((resolve, reject) => {
 })
 
 const runShader = fragShaderIndex => {
-  const {img, name} = fragShaderNames[fragShaderIndex]
+  const {frag, img} = manifests[fragShaderIndex]
 
   const promises = [
     fetch('glsl/vert.glsl').then(response => response.text()),
-    fetch(`glsl/${name}.glsl`).then(response => response.text()),
+    fetch(`glsl/${frag}.glsl`).then(response => response.text()),
   ]
 
   img && promises.push(loadImage(img))
@@ -115,7 +107,7 @@ const runShader = fragShaderIndex => {
 
 window.onhashchange = () => {
   fragShaderIndex = !location.hash ? 0 : Number(location.hash.slice(1))
-  if (!fragShaderNames[fragShaderIndex]) {
+  if (!manifests[fragShaderIndex]) {
     location.hash = 0
     fragShaderIndex = 0
   }
@@ -125,8 +117,8 @@ window.onhashchange = () => {
 
 window.onhashchange()
 
-const navigateLeft = () => location.hash = !fragShaderIndex ? fragShaderNames.length - 1 : fragShaderIndex - 1
-const navigateRight = () => location.hash = fragShaderIndex === fragShaderNames.length - 1 ? 0 : fragShaderIndex + 1
+const navigateLeft = () => location.hash = !fragShaderIndex ? manifests.length - 1 : fragShaderIndex - 1
+const navigateRight = () => location.hash = fragShaderIndex === manifests.length - 1 ? 0 : fragShaderIndex + 1
 
 let xDown = null
 let yDown = null
