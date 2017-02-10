@@ -44,4 +44,5 @@ float fbm (in vec2 st) {
 
 ## Resources
 
-This book is incredible [http://thebookofshaders.com](http://thebookofshaders.com)
+[http://thebookofshaders.com](http://thebookofshaders.com)
+[http://raymarching.com](http://raymarching.com)
