@@ -39,13 +39,11 @@ float rayMarching(vec3 origin, vec3 dir, float start, float end) {
 
 	for (int i = 0; i < maxIterations; i++) {
 		sceneDist = scene(origin + dir * rayDepth);
-		if ((sceneDist < stopThreshold) || (rayDepth >= end)) {
-			break;
-		}
+		if ((sceneDist < stopThreshold) || (rayDepth >= end)) break;
 		rayDepth += sceneDist * stepScale;
 	}
 
-	if ( sceneDist >= stopThreshold ) rayDepth = end;
+	if (sceneDist >= stopThreshold) rayDepth = end;
 	else rayDepth += sceneDist;
 
 	return rayDepth;
