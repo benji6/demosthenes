@@ -6,5 +6,4 @@ window.demosthenes.manifests = [
   {frag: 'smoke'},
   {frag: 'voronoi'},
   {frag: 'water'},
-  {frag: 'lines', img: 'lines.jpg'},
 ]
