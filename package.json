@@ -2,7 +2,6 @@
   "name": "demosthenes",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "start": "live-server",
     "test": "eslint js"
