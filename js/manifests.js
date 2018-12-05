@@ -1,9 +1,9 @@
-window.demosthenes.manifests = [
-  {frag: 'raymarchingBlobs'},
-  {frag: 'mandelbrot'},
-  {frag: 'marble-flow'},
-  {frag: 'noise'},
-  {frag: 'smoke'},
-  {frag: 'voronoi'},
-  {frag: 'water'},
+export default [
+  'raymarchingBlobs',
+  'mandelbrot',
+  'marble-flow',
+  'noise',
+  'smoke',
+  'voronoi',
+  'water',
 ]

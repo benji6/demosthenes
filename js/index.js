@@ -1,4 +1,4 @@
-const {manifests} = window.demosthenes
+import manifests from './manifests.js'
 
 let animationFrameId
 let fragShaderIndex
@@ -26,22 +26,13 @@ const gl = document.querySelector('canvas').getContext('webgl')
 gl.canvas.width = innerWidth
 gl.canvas.height = innerHeight
 
-const loadImage = src => new Promise((resolve, reject) => {
-  const img = new Image()
-  img.src = `img/${src}`
-  img.onerror = reject
-  img.onload = resolve(img)
-})
-
 const runShader = fragShaderIndex => {
-  const {frag, img} = manifests[fragShaderIndex]
+  const fragShader = manifests[fragShaderIndex]
 
   const promises = [
     fetch('glsl/vert.glsl').then(response => response.text()),
-    fetch(`glsl/${frag}.glsl`).then(response => response.text()),
+    fetch(`glsl/${fragShader}.glsl`).then(response => response.text()),
   ]
-
-  img && promises.push(loadImage(img))
 
   Promise.all(promises)
     .then(([vertexShaderSrc, fragmentShaderSrc, img]) => {
