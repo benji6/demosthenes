@@ -20,7 +20,7 @@ float sinusoidBumps(in vec3 p){
 }
 
 float scene(in vec3 p) {
-  p = mod(p, 1.0) - 0.5;
+  p = mod(p, 1.) - 0.5;
 	return sphere(p, .2 + .1 * abs(sin(u_time * .3))) + .05 * sinusoidBumps(p);
 }
 
@@ -57,14 +57,13 @@ vec3 lighting(vec3 surfacePosition, vec3 camPos, int reflectionPass){
     float bumps = sinusoidBumps(surfacePosition);
     objColor = clamp(objColor * .8 - vec3(.1, .4, .5) * bumps, 0., 1.);
 
-    float fakeShadowMovement =  sinusoidalPlasma(surfacePosition*8.);
-    objColor = clamp(objColor*(0.75-0.25*fakeShadowMovement), 0.0, 1.0);
+    float fakeShadowMovement = sinusoidalPlasma(surfacePosition * 8.);
+    objColor = clamp(objColor*(.75-.25*fakeShadowMovement), 0., 1.);
 
     vec3 surfNormal = getNormal(surfacePosition);
 
     vec3 lightPosition = vec3(0., 1., 0. + u_time);
     vec3 lightDirection = lightPosition - surfacePosition;
-    vec3 lightColor = vec3(1);
 
     float len = length(lightDirection);
     lightDirection /= len;
@@ -74,13 +73,13 @@ vec3 lighting(vec3 surfacePosition, vec3 camPos, int reflectionPass){
 
     float ambientOcclusion = 1.;
 
-    float ambient = .15;
+    float ambient = .25;
     float specularPower = 128.;
     float diffuse = max(0., dot(surfNormal, lightDirection));
     float specular = max(0., dot(ref, normalize(camPos-surfacePosition)));
     specular = pow(specular, specularPower);
 
-    sceneColor += (objColor*(diffuse*.8+ambient)+specular*.5)*lightColor*lightAtten*ambientOcclusion;
+    sceneColor += (objColor*(diffuse*.8+ambient)+specular*.5)*lightAtten*ambientOcclusion;
 
     return clamp(sceneColor, 0., 1.);
 }
