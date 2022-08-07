@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "live-server",
-    "test": "eslint js"
+    "test": "echo no tests"
   },
   "repository": {
     "type": "git",
@@ -17,8 +17,6 @@
   },
   "homepage": "https://github.com/benji6/demosthenes#readme",
   "devDependencies": {
-    "eslint": "^3.11.0",
-    "eslint-config-benji6": "^1.0.0",
     "live-server": "^1.1.0"
   }
 }
