@@ -6,7 +6,6 @@ This is my GLSL learnings and experiments
 
 [Check it out here!](https://benji6.github.io/demosthenes)
 
-
 ## Useful Functions
 
 ```glsl

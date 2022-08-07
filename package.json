@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
+    "fmt": "prettier --write '**/*'",
     "start": "live-server",
-    "test": "echo no tests"
+    "test": "prettier --check '**/*'"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/benji6/demosthenes#readme",
   "devDependencies": {
-    "live-server": "^1.1.0"
+    "live-server": "^1.1.0",
+    "prettier": "^2.7.1"
   }
 }
